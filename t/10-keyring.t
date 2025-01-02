@@ -1,8 +1,4 @@
-use strict;
-use Test::More tests => 21;
-use Test::Exception;
-
-use_ok 'Crypt::OpenPGP::KeyRing';
+use Test2::V0 -target => 'Crypt::OpenPGP::KeyRing';
 
 our $SAMPLES;
 unshift @INC, 't/';
@@ -22,7 +18,7 @@ isa_ok $ring, 'Crypt::OpenPGP::KeyRing';
 my( $kb, $cert );
 
 # Read the entire ring and look at each block
-lives_ok { $ring->read } 'ring->read succeeds';
+try_ok { $ring->read } 'ring->read succeeds';
 my @blocks = $ring->blocks;
 is @blocks, 1, '1 block';
 $kb = $blocks[0];
@@ -31,7 +27,7 @@ $cert = $kb->key;
 isa_ok $cert, 'Crypt::OpenPGP::Certificate';
 ok $cert->is_protected, 'cert is protected';
 is $cert->key_id, $packed_key_id, 'key_id matches';
-lives_ok { $cert->unlock( $passphrase ) } 'cert->unlock succeeds';
+try_ok { $cert->unlock( $passphrase ) } 'cert->unlock succeeds';
 is $kb->primary_uid, $uid, 'primary_uid matches';
 
 # Do lookups by key ID
@@ -61,3 +57,5 @@ isa_ok $kb, 'Crypt::OpenPGP::KeyBlock';
 is $kb->key->key_id, $packed_key_id,
     'found the right key by upper-cased uid';
 is $kb->primary_uid, $uid, 'primary_uid matches';
+
+done_testing;

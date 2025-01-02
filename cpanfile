@@ -25,8 +25,7 @@ requires "parent" => "0";
 requires "perl" => "v5.8.1";
 
 on 'test' => sub {
-  requires "Test::Exception" => "0";
-  requires "Test::More" => "0";
+  requires "Test2::V0" => "0";
 };
 
 on 'configure' => sub {
