@@ -15,6 +15,7 @@ requires "Crypt::Twofish" => "0";
 requires "Data::Buffer" => "0.04";
 requires "Digest::MD5" => "0";
 requires "Digest::SHA" => "0";
+requires "Exporter" => "5.57";
 requires "File::HomeDir" => "0";
 requires "LWP::UserAgent" => "0";
 requires "MIME::Base64" => "0";
