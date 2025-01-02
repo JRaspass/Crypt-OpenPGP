@@ -1,9 +1,6 @@
-use strict;
-use Test::More tests => 18;
+use Test2::V0 -target => 'Crypt::OpenPGP::Armour';
 
 use List::Util qw( max );
-
-use_ok 'Crypt::OpenPGP::Armour';
 
 my $obj = "FOO OBJECT";
 {
@@ -25,7 +22,7 @@ my $obj = "FOO OBJECT";
     my $ref = Crypt::OpenPGP::Armour->unarmour( $armoured );
     is $ref->{Data}, $data, 'unarmour produces original text';
     is $ref->{Object}, "PGP $obj", 'Object is defined properly';
-    is_deeply $ref->{Headers}, {
+    is $ref->{Headers}, {
         foo     => $headers{foo},
         baz     => $headers{baz},
         Version => Crypt::OpenPGP->version_string,
@@ -51,7 +48,7 @@ my $obj = "FOO OBJECT";
     my $ref = Crypt::OpenPGP::Armour->unarmour( $armoured );
     is $ref->{Data}, $data, 'unarmour produces original text';
     is $ref->{Object}, "PGP $obj", 'Object is defined properly';
-    is_deeply $ref->{Headers}, {
+    is $ref->{Headers}, {
         foo     => $headers{foo},
         baz     => $headers{baz},
         Version => Crypt::OpenPGP->version_string,
@@ -92,8 +89,10 @@ my $obj = "FOO OBJECT";
     my $ref = Crypt::OpenPGP::Armour->unarmour( $armoured );
     is $ref->{Data}, $data, 'unarmour produces original text';
     is $ref->{Object}, "PGP $obj", 'Object is defined properly';
-    is_deeply $ref->{Headers}, {
+    is $ref->{Headers}, {
         foo     => $headers{foo},
         baz     => $headers{baz},
     }, 'Headers contains our headers, no Version';
 }
+
+done_testing;

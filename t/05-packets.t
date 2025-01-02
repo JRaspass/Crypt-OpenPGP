@@ -1,12 +1,9 @@
-use strict;
-use Test::More tests => 27;
+use Test2::V0 -target => 'Crypt::OpenPGP::PacketFactory';
 
 use Crypt::OpenPGP::Plaintext;
 use Crypt::OpenPGP::UserID;
 use Crypt::OpenPGP::Buffer;
 use Crypt::OpenPGP::Constants qw( PGP_PKT_USER_ID PGP_PKT_PLAINTEXT );
-
-use_ok 'Crypt::OpenPGP::PacketFactory';
 
 ## 184 bytes
 my $text = <<TEXT;
@@ -98,7 +95,7 @@ my $buf = Crypt::OpenPGP::Buffer->new;
 $buf->append( $ser );
 my $pt2 = Crypt::OpenPGP::PacketFactory->parse( $buf );
 isa_ok $pt2, 'Crypt::OpenPGP::Plaintext';
-is_deeply $pt, $pt2, 'parsing serialized packet yields original';
+is $pt, $pt2, 'parsing serialized packet yields original';
 
 # Saving multiple packets
 my $userid = Crypt::OpenPGP::UserID->new( Identity => $id );
@@ -111,7 +108,7 @@ $buf->append( $ser );
 
 my( @pkts, $pkt );
 push @pkts, $pkt while $pkt = Crypt::OpenPGP::PacketFactory->parse( $buf );
-is_deeply \@pkts, [ $pt, $userid, $pt ],
+is \@pkts, [ $pt, $userid, $pt ],
     'parsing multiple packets gives us back all 3 originals';
 
 # Test finding specific packets
@@ -122,7 +119,7 @@ push @pkts, $pkt
         $buf,
         [ PGP_PKT_USER_ID ]
     );
-is_deeply \@pkts, [ $userid ], 'only 1 userid packet found';
+is \@pkts, [ $userid ], 'only 1 userid packet found';
 
 @pkts = ();
 $buf->reset_offset;
@@ -131,7 +128,7 @@ push @pkts, $pkt
         $buf,
         [ PGP_PKT_PLAINTEXT ]
     );
-is_deeply \@pkts, [ $pt, $pt ], '2 plaintext packets found';
+is \@pkts, [ $pt, $pt ], '2 plaintext packets found';
 
 # Test finding, but not parsing, specific packets
 
@@ -144,10 +141,10 @@ push @pkts, $pkt
         [ PGP_PKT_USER_ID ],
     );
 is @pkts, 3, 'found all 3 packets';
-isa_ok $pkts[0], 'HASH';
+like $pkts[0], {};
 ok $pkts[0]->{__unparsed}, 'plaintext packets are unparsed';
-is_deeply $pkts[1], $userid, 'userid packets are parsed';
-isa_ok $pkts[2], 'HASH';
+is $pkts[1], $userid, 'userid packets are parsed';
+like $pkts[2], {};
 ok $pkts[2]->{__unparsed}, 'plaintext packets are unparsed';
 
 use Data::Dumper;

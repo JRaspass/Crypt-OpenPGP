@@ -33,7 +33,7 @@ BEGIN {
 }
 
 for my $cid ( keys %TESTS ) {
-    diag $TESTS{ $cid };
+    note $TESTS{ $cid };
 
     my $ciph1 = Crypt::OpenPGP::Cipher->new( $cid, $KEY );
     isa_ok $ciph1, 'Crypt::OpenPGP::Cipher';
