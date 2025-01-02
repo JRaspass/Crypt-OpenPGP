@@ -44,7 +44,7 @@ BEGIN {
 }
 
 for my $did ( sort { $a <=> $b } keys %TESTS ) {
-    diag $TESTS{ $did };
+    note $TESTS{ $did };
     my $digest = Crypt::OpenPGP::Digest->new( $did );
     isa_ok $digest, 'Crypt::OpenPGP::Digest';
     is $digest->alg, $TESTS{ $did }, 'algorithm name matches';

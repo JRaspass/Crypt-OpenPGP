@@ -1,5 +1,4 @@
-use strict;
-use Test::More tests => 63;
+use Test2::V0;
 
 use Math::BigInt;
 use Crypt::OpenPGP::Util qw( bin2bigint bigint2bin bitsize mod_exp mod_inverse );
@@ -68,3 +67,5 @@ for my $bits (190..200) {
 	$val->brsft($bits);
 	ok $val->is_zero, "number is exactly $bits bits";
 }
+
+done_testing;

@@ -1,6 +1,4 @@
-use strict;
-use Test::More tests => 20;
-use Test::Exception;
+use Test2::V0;
 
 use Crypt::OpenPGP;
 use Crypt::OpenPGP::Config;
@@ -10,14 +8,12 @@ unshift @INC, 't/';
 require 'test-common.pl';
 use File::Spec;
 
-{
-    diag 'GnuPG config';
-
+subtest 'GnuPG config' => sub {
     my $cfg_file = File::Spec->catfile( $SAMPLES, 'cfg.gnupg' );
 
     my $cfg = Crypt::OpenPGP::Config->new;
     isa_ok $cfg, 'Crypt::OpenPGP::Config';
-    lives_ok { $cfg->read_config( 'GnuPG', $cfg_file ) }
+    try_ok { $cfg->read_config( 'GnuPG', $cfg_file ) }
         'can read GnuPG config file';
 
     # Test standard str directive
@@ -42,16 +38,14 @@ use File::Spec;
     isa_ok $pgp, 'Crypt::OpenPGP';
     isa_ok $pgp->{cfg}, 'Crypt::OpenPGP::Config';
     is $pgp->{cfg}->get( 'Armour' ), 1, 'Armour == 1';
-}
+};
 
-{
-    diag 'pgp2 config';
-
+subtest 'pgp2 config' => sub {
     my $cfg_file = File::Spec->catfile( $SAMPLES, 'cfg.pgp2' );
 
     my $cfg = Crypt::OpenPGP::Config->new;
     isa_ok $cfg, 'Crypt::OpenPGP::Config';
-    lives_ok { $cfg->read_config( 'PGP2', $cfg_file ) }
+    try_ok { $cfg->read_config( 'PGP2', $cfg_file ) }
         'can read pgp2 config file';
 
     # Test standard str directive
@@ -70,4 +64,6 @@ use File::Spec;
     isa_ok $pgp, 'Crypt::OpenPGP';
     isa_ok $pgp->{cfg}, 'Crypt::OpenPGP::Config';
     is $pgp->{cfg}->get( 'Armour' ), 1, 'Armour == 1';
-}
+};
+
+done_testing;

@@ -1,8 +1,6 @@
-use strict;
-use Test::More tests => 6;
+use Test2::V0 -target => 'Crypt::OpenPGP::Buffer';
 
 use Math::BigInt;
-use Crypt::OpenPGP::Buffer;
 
 my @num = map { Math::BigInt->new( $_ ) } qw( 34093840983 99999999999999999999 1 );
 
