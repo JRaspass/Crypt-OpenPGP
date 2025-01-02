@@ -1,7 +1,6 @@
 package Crypt::OpenPGP;
 use strict;
 use warnings;
-use 5.008_001;
 
 # VERSION
 
@@ -101,7 +100,10 @@ $Crypt::OpenPGP::Globals::Trim_trailing_ws = 1;
     );
 }
 
-sub version_string { __PACKAGE__ . ' ' . $VERSION }
+sub version_string {
+    no warnings 'uninitialized';
+    __PACKAGE__ . ' ' . __PACKAGE__->VERSION;
+}
 
 sub pubrings { $_[0]->{pubrings} }
 sub secrings { $_[0]->{secrings} }
